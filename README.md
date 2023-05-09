@@ -1,5 +1,7 @@
 # CLD - Workshop 2023
 
+Damien Maier, Elliot Ganty, Mélissa Gehring, Thomas Germano
+
 ## Topic
 
 [Amazon Rekognition](https://aws.amazon.com/rekognition/)
