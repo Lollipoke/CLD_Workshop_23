@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-from face_liveness.backend.aws import create_session, get_session_results
+from aws import create_session, get_session_results
 
 app = Flask(__name__)
 
@@ -17,6 +17,10 @@ def processended():
     status = get_session_results(session_id)
     return jsonify({'status': status})
 
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  return response
 
 if __name__ == '__main__':
     app.run(port=4242)
