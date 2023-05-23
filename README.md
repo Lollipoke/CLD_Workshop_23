@@ -8,24 +8,32 @@ Damien Maier, Elliot Ganty, Mélissa Gehring, Thomas Germano
 
 ## Use cases
 
-- [Face analysis and detection](https://docs.aws.amazon.com/rekognition/latest/dg/collections.html?pg=ln&sec=ft)
+- [Face liveness](https://docs.aws.amazon.com/rekognition/latest/dg/face-liveness-requirements.html)
 - [Labels](https://docs.aws.amazon.com/rekognition/latest/dg/labels.html?pg=ln&sec=ft)
 
 ## Scenario
 
-**Face analysis**
+**Face liveness**
 
 _given_
 
-Our face analysis system is up and running
+Our face liveness backend and frontend servers are up and running
 
 _when_
 
-A picture is sent
+A user accesses the frontend
 
 _then_
 
-The image is processed and 
+The backend receives a SessionID from AWS rekognition service and sends it to the client
+
+_then_
+
+The javascript FaceLivenessDetector component, that runs on the client, uses the client webcam and displays instructions to the user. During this process, it communicates with the Recognition Streaming Service that si running on AWS, using the SessionID.
+
+_then_
+
+The backend uses the SessionID to retrieve the result of the liveness detection from AWS. The result includes a liveliness score, and a picture appropriate to perform facial recognition.
 
 ---
 
