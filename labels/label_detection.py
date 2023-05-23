@@ -8,11 +8,12 @@ import cv2
 import PIL
 
 ANNOTATED_IMAGES_PATH = 'annotated_images/'
-IMAGE_NAME = 'annotated_{}'
+IMAGE_NAME = 'img{}.png'
+ANNOTATED_IMAGE_NAME = 'annotated_{}'
 BUCKET_NAME = 'aws.rekognition.cld.education.1'
 
 def transform_bounding(frame, box):
-    imgWidth, imgHeight = frame
+    imgHeight, imgWidth = frame
     left = int(imgWidth * box['Left'])
     top = int(imgHeight * box['Top'])
     right = left + int(imgWidth * box['Width'])
@@ -48,7 +49,7 @@ def annotate_photo(bucket, photo, labels):
 
 
     # Save image into annoteated images folder
-    cv2.imwrite(ANNOTATED_IMAGES_PATH + IMAGE_NAME.format(photo), frame)
+    cv2.imwrite(ANNOTATED_IMAGES_PATH + ANNOTATED_IMAGE_NAME.format(photo), frame)
 
 def detect_labels(photo, bucket):
     client = boto3.client('rekognition')
@@ -59,7 +60,7 @@ def detect_labels(photo, bucket):
                                     # Settings={"GeneralLabels": {"LabelInclusionFilters":["Cat"]},
                                     # "ImageProperties": {"MaxDominantColors":10}}
                                     )
-
+    
     print('Detected labels for ' + photo)
     print()
     for label in response['Labels']:
@@ -90,27 +91,25 @@ def detect_labels(photo, bucket):
             print("----------")
             print()
 
-    if "ImageProperties" in str(response):
-        print("Background:")
-        print(response["ImageProperties"]["Background"])
-        print()
-        print("Foreground:")
-        print(response["ImageProperties"]["Foreground"])
-        print()
-        print("Quality:")
-        print(response["ImageProperties"]["Quality"])
-        print()
-
     # Annotate image
     annotate_photo(bucket, photo, response['Labels'])
 
     return len(response['Labels'])
 
-def main():
-    photo = 'img0.png'
-    label_count = detect_labels(photo, BUCKET_NAME)
-    print("Labels detected: " + str(label_count))
+def get_num_images(bucket):
+    client = boto3.client('s3')
+    result = client.list_objects(Bucket=bucket)
+    return result['Contents'].__len__()
 
+def main():
+    # Find the number of images in the bucket
+    num_images = get_num_images(BUCKET_NAME)
+
+    # Detect labels in images
+    for i in range(num_images):
+        photo = IMAGE_NAME.format(i)
+        label_count = detect_labels(photo, BUCKET_NAME)
+        print("Labels detected for {}: {}".format(photo, label_count))
 
 if __name__ == "__main__":
     main()
