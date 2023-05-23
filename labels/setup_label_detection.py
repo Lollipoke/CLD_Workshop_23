@@ -6,7 +6,7 @@ import boto3
 
 IMAGES_PATH = 'images/'
 IMAGE_NAME = 'img{}.png'
-BUCKET_NAME = 'aws.rekognition.cld.education'
+BUCKET_NAME = 'aws.rekognition.cld.education.1'
 
 def upload_photo(path, bucket, photo):
     client = boto3.client('s3')  # TODO check params

@@ -8,8 +8,8 @@ import cv2
 import PIL
 
 ANNOTATED_IMAGES_PATH = 'annotated_images/'
-IMAGE_NAME = 'annotated_img{}.png'
-BUCKET_NAME = 'aws.rekognition.cld.education'
+IMAGE_NAME = 'annotated_{}'
+BUCKET_NAME = 'aws.rekognition.cld.education.1'
 
 def transform_bounding(frame, box):
     imgWidth, imgHeight = frame
@@ -31,7 +31,7 @@ def annotate_photo(bucket, photo, labels):
 
     # Set bounding box color and thickness
     color = (0, 255, 0)
-    thickness = 3
+    thickness = 2
 
     # Transform bounding boxes
     for label in labels:
@@ -40,23 +40,20 @@ def annotate_photo(bucket, photo, labels):
 
             left, top, right, bottom = transform_bounding(frame.shape[:-1], instance['BoundingBox'])
             conf = instance['Confidence']
-            label = label['Name']
+            name = label['Name']
 
             cv2.rectangle(frame, (left, top), (right, bottom), color, thickness)
 
-            cv2.putText(frame, label+":"+str(conf)[0:4], (left, top - 12), 0, 1e-3 * imgHeight, color, thickness//1)
+            cv2.putText(frame, name+":"+str(conf)[0:4], (left, top - 12), 0, 1e-3 * imgHeight, color, thickness//1)
 
 
     # Save image into annoteated images folder
     cv2.imwrite(ANNOTATED_IMAGES_PATH + IMAGE_NAME.format(photo), frame)
 
 def detect_labels(photo, bucket):
-
-    session = boto3.Session()
-    client = session.client('rekognition')
-
+    client = boto3.client('rekognition')
     response = client.detect_labels(Image={'S3Object': {'Bucket': bucket, 'Name': photo}},
-                                    MaxLabels=10,
+                                    MaxLabels=3,
                                     # Uncomment to use image properties and filtration settings
                                     #Features=["GENERAL_LABELS", "IMAGE_PROPERTIES"],
                                     # Settings={"GeneralLabels": {"LabelInclusionFilters":["Cat"]},
@@ -111,8 +108,7 @@ def detect_labels(photo, bucket):
 
 def main():
     photo = 'img0.png'
-    bucket = 'bucket-name'
-    label_count = detect_labels(photo, bucket)
+    label_count = detect_labels(photo, BUCKET_NAME)
     print("Labels detected: " + str(label_count))
 
 
