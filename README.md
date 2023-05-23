@@ -33,12 +33,12 @@ The image is processed and
 
 _given_
 
-Our label detector service is up and running
+Our label detector service is up and running, and images are uploaded to the Amazon S3 bucket
 
 _when_
 
-A picture is uploaded to the Amazon S3 Bucket
+Rekognition is called
 
 _then_
   
-The image is processed, and labels are annotated on the image
+The image is processed, and labels are annotated on the image and uploaded to the Amazon S3 bucket.
