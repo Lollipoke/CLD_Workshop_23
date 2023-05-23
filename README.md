@@ -13,23 +13,32 @@ Damien Maier, Elliot Ganty, Mélissa Gehring, Thomas Germano
 
 ## Scenario
 
-//**Face analysis**
-//given
+**Face analysis**
+
+_given_
+
 Our face analysis system is up and running
 
-//when
+_when_
+
 A picture is sent
 
-//then
+_then_
+
 The image is processed and 
 
-//**Stress phase*
-//given
-One instance "Drupal" is running.
-Using the stress utility, load the CPU.
+---
 
-//then
-The CPU load exceeds 30%.
+**Detecting labels**
 
-//when
-A second, third and fourth "Drupal" instance are launched.
+_given_
+
+Our label detector service is up and running
+
+_when_
+
+A picture is uploaded to the Amazon S3 Bucket
+
+_then_
+  
+The image is processed, and labels are annotated on the image
