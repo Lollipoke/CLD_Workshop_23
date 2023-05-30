@@ -1,7 +1,7 @@
 import boto3
 
 session = boto3.Session(profile_name='default')
-client = session.client('rekognition', region_name='eu-west-2')
+client = session.client('rekognition', region_name='eu-west-1')
 
 
 def create_session():

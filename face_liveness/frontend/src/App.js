@@ -3,6 +3,13 @@ import './App.css';
 import { FaceLivenessDetector } from '@aws-amplify/ui-react-liveness';
 import { Loader, ThemeProvider } from '@aws-amplify/ui-react';
 
+import { Amplify } from 'aws-amplify';
+import '@aws-amplify/ui-react/styles.css';
+import awsexports from './aws-exports';
+
+Amplify.configure(awsexports);
+
+
 function App() {
   const [loading, setLoading] = React.useState(true);
   const [createLivenessApiData, setCreateLivenessApiData] = React.useState(null);
@@ -11,7 +18,7 @@ function App() {
     const fetchCreateLiveness = async () => {
      
       // appel à notre API : on récupère le session id
-      const response  = await fetch('http://localhost:5000/getsessionid');
+      const response  = await fetch('http://localhost:4242/getsessionid');
       const data      = await response.json();
       console.log(data);
       setCreateLivenessApiData(data);
@@ -49,7 +56,7 @@ function App() {
     <ThemeProvider> {loading ? (<Loader className='loader' /> ) : (
         <FaceLivenessDetector   className="detector"
           sessionId={createLivenessApiData.sessionId}
-          region="us-east-1"
+          region="eu-west-1"
           onAnalysisComplete={handleAnalysisComplete}
         />
       )}
