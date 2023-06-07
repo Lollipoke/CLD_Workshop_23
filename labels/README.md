@@ -45,11 +45,16 @@ Here we have an example of image that works well with the Rekognition label dete
 
 ### Labels that don't have bounding boxes
 
-In some cases, Rekognition is able to detect labels, but does not provide a bounding box for them. We can interpret that as Rekognition detecting the recurring theme of the image, but not objects. We can see an example of this in the image below, where the label `Park` is detected, but no bounding box is provided.
+In some cases, Rekognition is able to detect labels, but does not provide a bounding box for them. We can interpret that as Rekognition detecting the recurring theme of the image, but not objects. We can see an example of this in the image below, where labels `Park`, `Grass` and `Coat` are detected, but no bounding box is provided.
 
-TODO check si sources
 
 ![No bounding box](./sources/no_box.png)
+
+---
+
+![Labels with no bounding box](./sources/labels_no_box.png)
+
+TODO check si sources et pourquoi pas de BB
 
 ### Overlapping bounding boxes
 

@@ -10,7 +10,7 @@ import PIL
 ANNOTATED_IMAGES_PATH = 'annotated_images/'
 IMAGE_NAME = 'img{}.png'
 ANNOTATED_IMAGE_NAME = 'annotated_{}'
-BUCKET_NAME = 'aws.rekognition.cld.education.1'
+BUCKET_NAME = 'aws.rekognition.cld.education'
 
 WRITTEN_LABELS = []
 
