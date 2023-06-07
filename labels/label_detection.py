@@ -12,6 +12,8 @@ IMAGE_NAME = 'img{}.png'
 ANNOTATED_IMAGE_NAME = 'annotated_{}'
 BUCKET_NAME = 'aws.rekognition.cld.education.1'
 
+WRITTEN_LABELS = []
+
 def transform_bounding(frame, box):
     imgHeight, imgWidth = frame
     left = int(imgWidth * box['Left'])
@@ -31,21 +33,35 @@ def annotate_photo(bucket, photo, labels):
     imgHeight, imgWidth, _ = frame.shape
 
     # Set bounding box color and thickness
-    color = (0, 255, 0)
+    color = (0, 255, 80)
     thickness = 2
 
     # Transform bounding boxes
+    WRITTEN_LABELS.clear()
     for label in labels:
-
+        name = label['Name']
         for instance in label['Instances']:
 
             left, top, right, bottom = transform_bounding(frame.shape[:-1], instance['BoundingBox'])
             conf = instance['Confidence']
-            name = label['Name']
 
             cv2.rectangle(frame, (left, top), (right, bottom), color, thickness)
 
-            cv2.putText(frame, name+":"+str(conf)[0:4], (left, top - 12), 0, 1e-3 * imgHeight, color, thickness//1)
+            # Check if label is within image, otherwise move label inside image
+            if top - 12 < 0:
+                top = 25
+
+            if left - 12 < 0:
+                left = 5
+
+            # Check if label is overlapping with other labels, otherwise move label down
+            for label in WRITTEN_LABELS:
+                if top - 12 <= label[1] and top + 12 >= label[1] and left - 12 <= label[0] + 100 and left + 100 >= label[0]:
+                    top = top + 40
+
+            cv2.putText(frame, name+":"+str(conf)[0:4]+"%", (left, top - 12), 0, 1e-3 * imgHeight, color, thickness//1)
+            # Add the location of the label to the list of written labels
+            WRITTEN_LABELS.append((left, top - 12))
 
 
     # Save image into annoteated images folder

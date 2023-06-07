@@ -39,23 +39,31 @@ The annotated images are now in the S3 bucket. We also save the annotated images
 
 ### Image that works well
 
-![Image that works well](./annotated_images/annotated_img0.png)
+![Image that works well](./sources/good.png)
 
-Here we have an example of image that works well with the Rekognition label detection. The labels are accurate, and the bounding boxes are well placed.
+Here we have an example of image that works well with the Rekognition label detection. The labels are accurate, and the bounding boxes are well placed. We can also see that Rekognition is able to detect a person even when there are just blurry feets in the background.
 
 ### Labels that don't have bounding boxes
 
-TODO
+In some cases, Rekognition is able to detect labels, but does not provide a bounding box for them. We can interpret that as Rekognition detecting the recurring theme of the image, but not objects. We can see an example of this in the image below, where the label `Park` is detected, but no bounding box is provided.
+
+TODO check si sources
+
+![No bounding box](./sources/no_box.png)
 
 ### Overlapping bounding boxes
 
-![Image that have overlapping bounding boxes](./annotated_images/annotated_img0.png)
+![Image that have overlapping bounding boxes](./sources/overlapping.png)
 
-TODO
+Here we have an example of image where two bounding boxes overlap, making the labels unreadable. We fixed it by shifting the labels down a bit, but it is not a perfect solution as it does not check all corner cases.
+
+Fixed image:
+
+![Fixed image that have overlapping bounding boxes](./sources/overlapping_fixed.png)
 
 ## Possible ameliorations
 
 - Pick a color scheme for each parent label category
-- Handle the overlapping bounding boxes (shift the text labels, only keep the label with the higher certainty when bounding boxes are the same, ...)
+- Better handle the overlapping bounding boxes (think more about corner cases when shifting the text labels, only keep the label with the higher certainty when bounding boxes are the same, ...)
 - Deploy a GUI version
 - ...
