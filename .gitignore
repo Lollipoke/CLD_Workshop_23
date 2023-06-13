@@ -6,3 +6,9 @@ node_modules
 __pycache__
 
 labels/annotated_images
+labels/.idea/inspectionProfiles/profiles_settings.xml
+labels/.idea/inspectionProfiles/Project_Default.xml
+labels/.idea/labels.iml
+labels/.idea/misc.xml
+labels/.idea/modules.xml
+labels/.idea/vcs.xml
